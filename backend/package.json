@@ -1,0 +1,19 @@
+{
+  "name": "food_scanning_app_backend",
+  "version": "1.0.0",
+  "description": "Backend Services for the Food Scanning Application",
+  "main": "index.js",
+  "scripts": {
+    "serve": "nodemon index.js",
+    "test": "mocha"
+  },
+  "author": "Akash, Fernanda, Nick, Kevin",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^8.3.2",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
