@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon index.js",
-    "test": "mocha"
+    "test": "mocha --recursive"
   },
   "author": "Akash, Fernanda, Nick, Kevin",
   "license": "ISC",
   "devDependencies": {
     "mocha": "^8.3.2",
+    "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7"
   },
   "dependencies": {
