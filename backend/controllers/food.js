@@ -61,6 +61,7 @@ food.get('/:foodId/',(req, res) => {
             if (foodId == c.foodId){
                 console.log('cache hit');
                 res.status(200).json(c)
+                return
             }
         }
         
@@ -80,6 +81,7 @@ food.get('/:foodId/',(req, res) => {
                 // TODO: cache in Cassandra
 
                 res.status(200).json(processed)
+                return
 
             }
             else {
