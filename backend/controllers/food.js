@@ -20,18 +20,18 @@ food.get('/:foodId/',(req, res) => {
 
             if (data) {
 
-            let processed = {
-                foodId: data.fdcId,
-                name: data.description,
-                ingredients: data.ingredients,
-                servingSize: data.servingSize,
-                servingSizeUnit: data.servingSizeUnit,
-                labelNutrients: data.labelNutrients
-            }
+                let processed = {
+                    foodId: data.fdcId,
+                    name: data.description,
+                    ingredients: data.ingredients,
+                    servingSize: data.servingSize,
+                    servingSizeUnit: data.servingSizeUnit,
+                    labelNutrients: data.labelNutrients
+                }
 
-            // TODO: cache in Cassandra
+                // TODO: cache in Cassandra
 
-            res.status(200).json(processed)
+                res.status(200).json(processed)
 
             }
             else {
