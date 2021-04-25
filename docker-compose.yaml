@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  foodscanningdb:
+    container_name: foodscanningdb
+    build:
+      context: ./cassandra/
+      dockerfile: ./Dockerfile
+    environment: 
+      - CASSANDRA_KEYSPACE=foodscanning
+    ports:
+      - 9042:9042
+    volumes:
+      - foodscanningdata:/var/lib/cassandra
+    restart: always
+volumes:
+  foodscanningdata:
+    name: foodscanningdata
