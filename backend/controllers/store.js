@@ -36,6 +36,7 @@ store.get('/items/:foodId/',(req, res) => {
     let foodId = req.params.foodId
     let lat = req.query.lat
     let long = req.query.long
+    let radius = req.query.radius
 
     if (foodId && lat && long) {
 
@@ -43,7 +44,7 @@ store.get('/items/:foodId/',(req, res) => {
 
         if (foodResult) {
 
-            listStoresFromGoogle(foodResult.name, long, lat).then((storesResult) => {
+            listStoresFromGoogle(foodResult.name, long, lat, radius).then((storesResult) => {
                 res.status(200).json(storesResult)
             })
         }
