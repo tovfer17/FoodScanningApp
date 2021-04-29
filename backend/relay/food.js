@@ -64,9 +64,14 @@ const getFoodFromUSDA = async (foodId) => {
 }
 
 const saveFoodToCassandra = (food) => {
-    /*Write to table*/
-    console.log(`saved ${food.foodId} to table successfully`);
-    return true
+    if (food){
+        /*Write to table*/
+        return true
+    }
+    else {
+        return false
+    }
+    
 }
 
-module.exports = {getFoodFromCassandra, getFoodFromUSDA, saveFoodToCassandra};
+module.exports = {getFoodFromCassandra, getFoodFromUSDA, saveFoodToCassandra, cache};
