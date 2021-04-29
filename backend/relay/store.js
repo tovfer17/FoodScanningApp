@@ -30,5 +30,19 @@ const listStoresFromGoogle = async (name, long, lat, radius=2000) => {
     }
 }
 
+const listStoresFromGoogle2 = async (name, long, lat, radius=2000) => {
+    let encoded_name = encodeURI('where to buy '+name)
+    let res = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encoded_name}&fields=photos,formatted_address,geometry,name,opening_hours,place_id&location=${lat},${long}&radius=${radius}&key=${process.env.GOOGLE_API_KEY}`)
 
-module.exports = {getStoreFromGoogleById, listStoresFromGoogle}
+    let data = await res.json()
+
+    if (data && res.status === 200){
+        return data.results
+    }
+    else {
+        return null
+    }
+}
+
+
+module.exports = {getStoreFromGoogleById, listStoresFromGoogle, listStoresFromGoogle2}

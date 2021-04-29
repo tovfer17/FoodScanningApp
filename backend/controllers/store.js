@@ -1,6 +1,6 @@
 const express = require('express')
 const {getFoodFromCassandra} = require('../relay/food')
-const {listStoresFromGoogle,getStoreFromGoogleById} = require('../relay/store')
+const {listStoresFromGoogle,getStoreFromGoogleById, listStoresFromGoogle2} = require('../relay/store')
 const store = express()
 module.exports = store;
 
@@ -44,7 +44,7 @@ store.get('/items/:foodId/',(req, res) => {
 
         if (foodResult) {
 
-            listStoresFromGoogle(foodResult.name, long, lat, radius).then((storesResult) => {
+            listStoresFromGoogle2(foodResult.name, long, lat, radius).then((storesResult) => {
                 res.status(200).json(storesResult)
             })
         }
