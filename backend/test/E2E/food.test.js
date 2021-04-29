@@ -4,7 +4,7 @@ const assert = require('assert')
 const url = 'http://localhost:3000/food'
 
 describe('Get Food',() => {
-    it('Model Validation', async () => {
+    it('Returns a 200', async () => {
         const res = await fetch(url+'/373052/')
 
         assert.strictEqual(res.status, 200, '200 OK not returned from food endpoint')
