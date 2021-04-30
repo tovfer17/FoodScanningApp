@@ -1,4 +1,7 @@
 const fetch = require('node-fetch')
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 const getToken = async () => {
     let res = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`,{
@@ -9,7 +12,7 @@ const getToken = async () => {
         body: JSON.stringify({
             "client_id": process.env.AUTH0_CLIENT_ID,
             "client_secret": process.env.AUTH0_CLIENT_SECRET,
-            "audience":`https://${process.env.AUTH0_DOMAIN}/api/v2/`,
+            "audience": process.env.AUTH0_API_IDENTIFIER,
             "grant_type":"client_credentials"
         })
     })
