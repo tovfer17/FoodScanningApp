@@ -4,18 +4,34 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express')
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
 const app = express()
 const port = process.env.PORT || 3000
 const user = require('./controllers/user')
 const food = require('./controllers/food')
 const store = require('./controllers/store')
 
+const checkJwt = jwt({
+    secret: jwksRsa.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+    }),
+  
+    // Validate the audience and the issuer.
+    audience: process.env.AUTH0_API_IDENTIFIER,
+    issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+    algorithms: ['RS256']
+  });
 
 app.get('/', (req, res) => {
     res.send('Hello world')
 })
 
-// add middleware for JWT validation (Authenticated Users)
+// comment out for now
+//app.use(checkJwt);
 
 app.use(express.json())
 app.use('/user', user)

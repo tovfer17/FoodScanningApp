@@ -1,11 +1,22 @@
 const fetch = require('node-fetch')
 const assert = require('assert')
+const {getToken} = require('../../utilities/utility')
 
 const url = 'http://localhost:3000/food'
 
 describe('Get Food',() => {
+    let access_token;
+
+    before(async () => {
+        //access_token = await getToken().catch(e => console.log('error - ', e))
+    });
+
     it('Returns a 200', async () => {
-        const res = await fetch(url+'/373052/')
+        const res = await fetch(url+'/373052/', {
+            headers: {
+                'authorization': `Bearer ${access_token}`
+            }
+        })
 
         assert.strictEqual(res.status, 200, '200 OK not returned from food endpoint')
 
