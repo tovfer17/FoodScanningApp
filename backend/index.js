@@ -11,6 +11,9 @@ const port = process.env.PORT || 3000
 const user = require('./controllers/user')
 const food = require('./controllers/food')
 const store = require('./controllers/store')
+const initCassandra = require('./cassandra/init.js')
+
+initCassandra(15)
 
 const checkJwt = jwt({
     secret: jwksRsa.expressJwtSecret({

@@ -9,12 +9,12 @@ food.get('/', (req, res) => {
 
 // Sample IDs: 534358, 373052
 
-food.get('/:foodId/',(req, res) => {
+food.get('/:foodId/', async (req, res) => {
     const foodId = req.params.foodId
 
     if (foodId) {
         
-        let result = getFoodFromCassandra(foodId)
+        let result = await getFoodFromCassandra(foodId)
 
         if (result) {
             console.log(`cache hit on ${foodId}`);
@@ -36,6 +36,10 @@ food.get('/:foodId/',(req, res) => {
                     servingSizeUnit: data.servingSizeUnit,
                     labelNutrients: data.labelNutrients
                 }
+                
+                Object.keys(processed.labelNutrients).forEach(nutrient => {
+                  processed.labelNutrients[nutrient] = processed.labelNutrients[nutrient].value
+                })
 
                 res.status(200).json(processed)
                 saveFoodToCassandra(processed)

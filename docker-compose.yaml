@@ -1,6 +1,19 @@
 version: '3.7'
 
 services:
+  foodscanningbackend:
+    container_name: foodscanningbackend
+    build:
+      context: ./backend/
+      dockerfile: docker/Dockerfile  
+    restart: always
+    volumes:
+      - ./backend:/usr/src/app
+    command: "npm run serve"
+    ports:
+      - 3000:3000
+    depends_on: 
+      - "foodscanningdb"
   foodscanningdb:
     container_name: foodscanningdb
     build:
@@ -12,6 +25,7 @@ services:
       - 9042:9042
     volumes:
       - foodscanningdata:/var/lib/cassandra
+    command: "sh /entrypoint-wrap.sh"
     restart: always
 volumes:
   foodscanningdata:
