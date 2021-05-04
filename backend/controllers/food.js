@@ -1,5 +1,5 @@
 const express = require('express')
-const {getFoodFromUSDA, getFoodFromCassandra, saveFoodToCassandra} = require('../relay/food')
+const {getFoodFromNutritionix, getFoodFromCassandra, saveFoodToCassandra} = require('../relay/food')
 const food = express()
 module.exports = food;
 
@@ -7,7 +7,7 @@ food.get('/', (req, res) => {
     res.send('Hello world from food controller')
 })
 
-// Sample IDs: 534358, 373052
+// Sample IDs: 0076150232165
 
 food.get('/:foodId/', async (req, res) => {
     const foodId = req.params.foodId
@@ -24,29 +24,36 @@ food.get('/:foodId/', async (req, res) => {
 
         console.log(`cache miss on ${foodId}`);
 
-        getFoodFromUSDA(foodId).then(data => {
+        getFoodFromNutritionix(foodId).then(data => {
 
             if (data) {
-
                 let processed = {
-                    foodId: data.fdcId,
-                    name: data.description,
-                    ingredients: data.ingredients,
-                    servingSize: data.servingSize,
-                    servingSizeUnit: data.servingSizeUnit,
-                    labelNutrients: data.labelNutrients
+                    foodId,
+                    name: data.food_name,
+                    ingredients: data.nf_ingredient_statement,
+                    servingSize: data.serving_qty,
+                    servingSizeUnit: data.serving_unit,
+                    labelNutrients: {
+                        calories: data.nf_calories,
+                        fat: data.nf_total_fat,
+                        saturatedFat: data.nf_saturated_fat,
+                        cholesterol: data.nf_cholesterol,
+                        sodium: data.nf_sodium,
+                        carbohydrates: data.nf_total_carbohydrate,
+                        fiber: data.nf_dietary_fiber,
+                        sugars: data.nf_sugars,
+                        protein: data.nf_protein,
+                        potassium: data.nf_potassium,
+                      },
+                    photo: data.photo.thumb
                 }
-                
-                Object.keys(processed.labelNutrients).forEach(nutrient => {
-                  processed.labelNutrients[nutrient] = processed.labelNutrients[nutrient].value
-                })
 
                 res.status(200).json(processed)
                 saveFoodToCassandra(processed)
                 
                 return
 
-            }
+           }
             else {
                 res.status(404).json({
                     ErrorMessage: "Item not found"

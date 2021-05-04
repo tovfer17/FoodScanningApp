@@ -22,4 +22,4 @@ const getToken = async () => {
     return data.access_token
 }
 
-module.exports = {getToken}
+module.exports = {getToken, getFoodsFromUSDA}
