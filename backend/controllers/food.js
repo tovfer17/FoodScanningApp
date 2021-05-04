@@ -29,7 +29,6 @@ food.get('/:foodId/', async (req, res) => {
         getFoodFromNutritionix(foodId).then(data => {
 
             if (data) {
-
                 let processed = {
                     foodId,
                     name: data.food_name,
@@ -37,26 +36,22 @@ food.get('/:foodId/', async (req, res) => {
                     servingSize: data.serving_qty,
                     servingSizeUnit: data.serving_unit,
                     labelNutrients: {
-                        'calories': data.nf_calories,
-                        'fat': data.nf_total_fat,
-                        'saturated fat': data.nf_saturated_fat,
-                        'cholesterol': data.nf_cholesterol,
-                        'sodium': data.nf_sodium,
-                        'total_carbohydrate':data.nf_total_carbohydrate,
-                        'dietary_fiber':data.nf_dietary_fiber,
-                        'sugars':data.nf_sugars,
-                        'protein':data.nf_protein,
-                        'potassium':data.nf_potassium,
-                        'photo':data.photo
-                    }
+                        calories: data.nf_calories,
+                        fat: data.nf_total_fat,
+                        saturatedFat: data.nf_saturated_fat,
+                        cholesterol: data.nf_cholesterol,
+                        sodium: data.nf_sodium,
+                        carbohydrates: data.nf_total_carbohydrate,
+                        fiber: data.nf_dietary_fiber,
+                        sugars: data.nf_sugars,
+                        protein: data.nf_protein,
+                        potassium: data.nf_potassium,
+                      },
+                    photo: data.photo.thumb
                 }
-                
-                // Object.keys(processed.labelNutrients).forEach(nutrient => {
-                //   processed.labelNutrients[nutrient] = processed.labelNutrients[nutrient].value
-                // })
 
                 res.status(200).json(processed)
-                // saveFoodToCassandra(processed)
+                saveFoodToCassandra(processed)
                 
                 return
 

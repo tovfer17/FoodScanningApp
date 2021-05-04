@@ -22,34 +22,4 @@ const getToken = async () => {
     return data.access_token
 }
 
-
-/*This function will serve as a batch call to USDA. And load all of the returned data into Cassandra*/
- const getFoodsFromUSDA = async () => {
-
-//     // 
-//     getFoodFromUSDA(foodId).then(data => {
-
-//                 if (data) {
-    
-//                     let processed = {
-//                         foodId: data.gtinUpc,
-//                         name: data.description,
-//                         ingredients: data.ingredients,
-//                         servingSize: data.servingSize,
-//                         servingSizeUnit: data.servingSizeUnit,
-//                         labelNutrients: data.labelNutrients
-//                     }
-                    
-//                     Object.keys(processed.labelNutrients).forEach(nutrient => {
-//                       processed.labelNutrients[nutrient] = processed.labelNutrients[nutrient].value
-//                     })
-    
-//                     res.status(200).json(processed)
-//                     saveFoodToCassandra(processed)
-                    
-//                     return
-    
-//                }
- }
-
 module.exports = {getToken, getFoodsFromUSDA}
