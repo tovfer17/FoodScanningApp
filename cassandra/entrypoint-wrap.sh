@@ -43,6 +43,7 @@ CQL+="CREATE TABLE IF NOT EXISTS $CASSANDRA_KEYSPACE.foods
         serving_size int,
         serving_size_unit text,
         label_nutrients frozen<nutrients>,
+        photo text,
         PRIMARY KEY (\"foodId\")
       );
 "
