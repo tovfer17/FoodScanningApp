@@ -22,8 +22,6 @@ food.get('/:foodId/', async (req, res) => {
             return
         }
 
-        // else return 404 here
-
         console.log(`cache miss on ${foodId}`);
 
         getFoodFromNutritionix(foodId).then(data => {
@@ -33,16 +31,16 @@ food.get('/:foodId/', async (req, res) => {
                 let processed = {
                     foodId,
                     name: data.food_name,
-                    ingredients: data.ingredients,
+                    ingredients: data.nf_ingredient_statement,
                     servingSize: data.serving_qty,
                     servingSizeUnit: data.serving_unit,
                     labelNutrients: {
                         'calories': data.nf_calories,
                         'fat': data.nf_total_fat,
-                        'saturated fat': data.nf_saturated_fat,
+                        'saturated_fat': data.nf_saturated_fat,
                         'cholesterol': data.nf_cholesterol,
                         'sodium': data.nf_sodium,
-                        'total_carbohydrate':data.nf_total_carbohydrate,
+                        'carbohydrates':data.nf_total_carbohydrate,
                         'dietary_fiber':data.nf_dietary_fiber,
                         'sugars':data.nf_sugars,
                         'protein':data.nf_protein,

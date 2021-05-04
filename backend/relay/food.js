@@ -4,43 +4,30 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const cache = [
-  {
-      foodId: 534358,
-      name: "NUT 'N BERRY MIX",
-      ingredients: 'PEANUTS (PEANUTS, PEANUT AND/OR SUNFLOWER OIL). RAISINS. DRIED CRANBERRIES (CRANBERRIES, SUGAR, SUNFLOWER OIL). SUNFLOWER KERNELS AND ALMONDS (SUNFLOWER KERNELS AND ALMONDS, PEANUT AND/OR SUNFLOWER OIL).',
-      servingSize: 28,
-      servingSizeUnit: 'g',
-      labelNutrients: {
-        fat: 8.9992,
-        saturatedFat: 0.9996,
-        transFat: 0,
-        cholesterol: 0,
-        sodium: 0,
-        carbohydrates: 12.0008,
-        fiber: 1.988,
-        sugars: 7.9996,
-        protein: 4.0012,
-        calcium: 19.88,
-        iron: 0.7196,
-        potassium: 159.88,
-        calories: 140
-      }
-  },
-  {
-      foodId: 373052,
-      name: 'AGAVE NECTAR',
-      ingredients: 'ORGANIC AGAVE. ',
-      servingSize: 21,
-      servingSizeUnit: 'g',
-      labelNutrients: {
-        fat: 0,
-        sodium: 0,
-        carbohydrates: 15.9999,
-        sugars: 14.0007,
-        protein: 0,
-        calories: 65.1
-      }
+{
+  foodId: '0076150232165',
+  name: 'Movie Theater Butter Popcorn',
+  ingredients: 'popping corn, palm oil, salt, less than 2% of: butter, natural flavoring, color added, tbhq and citric acid (for freshness).',
+  servingSize: 2,
+  servingSizeUnit: 'tbsp unpopped',
+  labelNutrients: {
+    calories: 150,
+    fat: 8,
+    'saturated fat': 4,
+    cholesterol: 0,
+    sodium: 370,
+    carbohydrates: 19,
+    'dietary fiber': 3,
+    sugars: null,
+    protein: 2,
+    potassium: 60,
+    photo: {
+      thumb: 'https://nutritionix-api.s3.amazonaws.com/546a0e812bc0b27b2a676d01.jpeg',
+      highres: null,
+      is_user_uploaded: false
     }
+  }
+}
 ]
 
 const getFoodFromCassandra = async (foodId) => {
