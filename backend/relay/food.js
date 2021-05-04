@@ -54,18 +54,24 @@ const getFoodFromCassandra = async (foodId) => {
 
 const getFoodFromUSDA = async (foodId) => {
   try {
-    let res = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${foodId}?api_key=${process.env.USDA_API_KEY}`)
+   let res = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${foodId}?api_key=${process.env.USDA_API_KEY}`)
+
+    // let res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.USDA_API_KEY}&dataType=Foundation,SR%20Legacy,Branded,Survey&query=${foodId}`)
+
+    //let res = await fetch(`https://api.upcdatabase.org/product/${foodId}`)
 
     let data = await res.json()
 
+    console.log('RELAY - ',res,data);
+
     if (data && res.status === 200){
-      return data
+      return data.foods //data
     }
     else {
       return null
     }
   } catch (error) {
-    console.log("USDA Request Error")
+    console.log("USDA Request Error", error)
     return null
   }
     

@@ -7,7 +7,7 @@ food.get('/', (req, res) => {
     res.send('Hello world from food controller')
 })
 
-// Sample IDs: 534358, 373052
+// Sample IDs: 534358, 373052, 0076150232165
 
 food.get('/:foodId/', async (req, res) => {
     const foodId = req.params.foodId
@@ -22,37 +22,46 @@ food.get('/:foodId/', async (req, res) => {
             return
         }
 
-        console.log(`cache miss on ${foodId}`);
+        // else return 404 here
 
-        getFoodFromUSDA(foodId).then(data => {
+        else {
+            res.status(404).json({
+                ErrorMessage: "Item not found"
+            })
+            return
+        }
 
-            if (data) {
+    //     console.log(`cache miss on ${foodId}`);
 
-                let processed = {
-                    foodId: data.fdcId,
-                    name: data.description,
-                    ingredients: data.ingredients,
-                    servingSize: data.servingSize,
-                    servingSizeUnit: data.servingSizeUnit,
-                    labelNutrients: data.labelNutrients
-                }
+    //     getFoodFromUSDA(foodId).then(data => {
+
+    //         if (data) {
+
+    //             let processed = {
+    //                 foodId: data.gtinUpc,
+    //                 name: data.description,
+    //                 ingredients: data.ingredients,
+    //                 servingSize: data.servingSize,
+    //                 servingSizeUnit: data.servingSizeUnit,
+    //                 labelNutrients: data.labelNutrients
+    //             }
                 
-                Object.keys(processed.labelNutrients).forEach(nutrient => {
-                  processed.labelNutrients[nutrient] = processed.labelNutrients[nutrient].value
-                })
+    //             Object.keys(processed.labelNutrients).forEach(nutrient => {
+    //               processed.labelNutrients[nutrient] = processed.labelNutrients[nutrient].value
+    //             })
 
-                res.status(200).json(processed)
-                saveFoodToCassandra(processed)
+    //             res.status(200).json(processed)
+    //             saveFoodToCassandra(processed)
                 
-                return
+    //             return
 
-            }
-            else {
-                res.status(404).json({
-                    ErrorMessage: "Item not found"
-                })
-            }
-        })
+    //        }
+    //         else {
+    //             res.status(404).json({
+    //                 ErrorMessage: "Item not found"
+    //             })
+    //         }
+    //     })
     }
     else {
         res.status(400).json({
