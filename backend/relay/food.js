@@ -1,4 +1,7 @@
 const fetch = require('node-fetch')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const cache = [
   {
@@ -52,26 +55,30 @@ const getFoodFromCassandra = async (foodId) => {
   }
 }
 
-const getFoodFromUSDA = async (foodId) => {
+const getFoodFromNutritionix = async (foodId) => {
   try {
-   let res = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${foodId}?api_key=${process.env.USDA_API_KEY}`)
+   //let res = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${foodId}?api_key=${process.env.USDA_API_KEY}`)
 
-    // let res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.USDA_API_KEY}&dataType=Foundation,SR%20Legacy,Branded,Survey&query=${foodId}`)
+    let res = await fetch(`https://trackapi.nutritionix.com/v2/search/item?upc=${foodId}`,{
+      headers: {
+        "x-app-id": process.env.NUTRITIONIX_APP_ID,
+        "x-app-key": process.env.NUTRITIONIX_APP_KEY
+      }
+    })
 
-    //let res = await fetch(`https://api.upcdatabase.org/product/${foodId}`)
 
     let data = await res.json()
 
-    console.log('RELAY - ',res,data);
+    //console.log('RELAY - ',res,data);
 
     if (data && res.status === 200){
-      return data.foods //data
+      return data.foods[0] //data
     }
     else {
       return null
     }
   } catch (error) {
-    console.log("USDA Request Error", error)
+    console.log("Error", error)
     return null
   }
     
@@ -100,4 +107,4 @@ const saveFoodToCassandra = async (food) => {
     
 }
 
-module.exports = {getFoodFromCassandra, getFoodFromUSDA, saveFoodToCassandra, cache};
+module.exports = {getFoodFromCassandra, getFoodFromNutritionix, saveFoodToCassandra, cache};
