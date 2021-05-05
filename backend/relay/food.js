@@ -13,20 +13,16 @@ const cache = [
   labelNutrients: {
     calories: 150,
     fat: 8,
-    'saturated fat': 4,
+    saturatedFat: 4,
     cholesterol: 0,
     sodium: 370,
     carbohydrates: 19,
-    'dietary fiber': 3,
+    fiber: 3,
     sugars: null,
     protein: 2,
     potassium: 60,
-    photo: {
-      thumb: 'https://nutritionix-api.s3.amazonaws.com/546a0e812bc0b27b2a676d01.jpeg',
-      highres: null,
-      is_user_uploaded: false
-    }
-  }
+  },
+  photo: 'https://nutritionix-api.s3.amazonaws.com/546a0e812bc0b27b2a676d01.jpeg'
 }
 ]
 
