@@ -15,101 +15,23 @@ import SupportScreen from './screens/SupportScreen';
 import SettingScreen from './screens/SettingsScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
 import { proc } from 'react-native-reanimated';
-import Auth0 from 'react-native-auth0';
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
-
-const Drawer = createDrawerNavigator();
-
-const authorizationEndpoint = 'https://foodscanningapp.us.auth0.com/authorize'
-const auth0ClientId = 'h1tCVe2rPsTtOfnZgVVhp6j8f5ZrIZme'//process.env.AUTH0_CLIENT_ID
-
-const useProxy = Platform.select({ web: false, default: true });
-const redirectUri = AuthSession.makeRedirectUri({ useProxy });
-
-//const auth0 = new Auth0({ domain: 'foodscanningapp.us.auth0.com', clientId: 'h1tCVe2rPsTtOfnZgVVhp6j8f5ZrIZme' });
-
-// auth0
-//     .webAuth
-//     .authorize({scope: 'openid profile email'})
-//     .then(credentials =>
-//       // Successfully authenticated
-//       // Store the accessToken
-//       this.setState({ accessToken: credentials.accessToken })
-//     )
-//     .catch(error => console.log(error));
-
-// auth0
-//     .webAuth
-//     .clearSession({})
-//     .then(success => {
-//         Alert.alert(
-//             'Logged out!'
-//         );
-//         this.setState({ accessToken: null });
-//     })
-//     .catch(error => {
-//         console.log('Log out cancelled');
-//     });
-
-// class Auth0LoginContainer extends React.Component {
-// _loginWithAuth0 = async () => {
-//   const redirectUrl = AuthSession.getRedirectUrl();
-//   let authUrl = `${auth0Domain}/authorize` + toQueryString({
-//       client_id: auth0ClientId,
-//       response_type: 'token',
-//       scope: 'openid profile email',
-//       redirect_uri: redirectUrl,
-//   });
-//   console.log(`Redirect URL (add this to Auth0): ${redirectUrl}`);
-//   console.log(`AuthURL is:  ${authUrl}`);
-//   const result = await AuthSession.startAsync({
-//       authUrl: authUrl
-//   });
-
-//   if (result.type === 'success') {
-//       console.log(result);
-//       // let token = result.params.access_token;
-//       // this.props.setToken(token);
-//       // this.props.navigation.navigate("Next Screen");
-//       this.handleResponse(response.params);
-//   }
-// };
-
-// handleResponse = (response) => {
-//   if (response.error) {
-//     Alert('Authentication error', response.error_description || 'something went wrong');
-//     return;
-//   }
-
-//   // Retrieve the JWT token and decode it
-//   const jwtToken = response.id_token;
-//   const decoded = jwtDecode(jwtToken);
-
-//   const { name } = decoded;
-//   this.setState({ name });
-// };
-
-// render() {
-//   const { name } = this.state;
-
-//   return (
-//     <View style={styles.container}>
-//       {
-//         name ?
-//         <Text style={styles.title}>You are logged in, {name}!</Text> :
-//         <Button title="Log in with Auth0" onPress={this.login} />
-//       }
-//     </View>
-//   );
-// }
-
+// function toQueryString(params) {
+//   return '?' + Object.entries(params)
+//     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+//     .join('&');
 // }
 
 const App = () => {
-  const [name, setName] = useState(null);
+  
+  const Drawer = createDrawerNavigator();
+  
+  const authorizationEndpoint = 'https://foodscanningapp.us.auth0.com/authorize'; 
+  const auth0ClientId = 'h1tCVe2rPsTtOfnZgVVhp6j8f5ZrIZme'
+  
+  const useProxy = Platform.select({ web: false, default: true });
+  const redirectUri = AuthSession.makeRedirectUri({ useProxy });
+  const [user, setUser] = useState(null);
 
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
@@ -127,9 +49,24 @@ const App = () => {
     { authorizationEndpoint }
   );
 
+  // const queryParams = toQueryString({
+  //   client_id: auth0ClientId,
+  //   redirect_uri: redirectUrl,
+  //   response_type: 'id_token', // id_token will return a JWT token
+  //   scope: 'openid profile', // retrieve the user's profile
+  //   nonce: 'nonce', // ideally, this will be a random value
+  // });
+  // const authUrl = `${auth0Domain}/authorize` + queryParams;
+
+  // // Perform the authentication
+  // AuthSession.startAsync({ authUrl }).then(response => {
+  //   console.log('response - ',response);
+  // });
+
   console.log(`Redirect URL: ${redirectUri}`);
 
   useEffect(() => {
+    console.log('sign in info - ', result);
     if (result) {
       if (result.error) {
         Alert.alert(
@@ -143,8 +80,9 @@ const App = () => {
         const jwtToken = result.params.id_token;
         const decoded = jwtDecode(jwtToken);
 
-        const { name } = decoded;
-        setName(name);
+        //const { name } = decoded;
+        //setName(name);
+        setUser(decoded)
       }
     }
   }, [result]);
@@ -152,10 +90,10 @@ const App = () => {
   return (
     <>
     <View>
-      {name ? (
+      {user ? (
         <>
-          <Text>You are logged in, {name}!</Text>
-          <Button title="Log out" onPress={() => setName(null)} />
+          <Text>You are logged in, {user.name}!</Text>
+          <Button title="Log out" onPress={() => setUser(null)} />
         </>
       ) : (
         <Button
@@ -166,14 +104,12 @@ const App = () => {
       )}
     </View>
     <NavigationContainer>
-      {/* <Auth0LoginContainer> */}
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props}/>}>
           <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
           <Drawer.Screen name="SupportScreen" component={SupportScreen} />
           <Drawer.Screen name="SettingsScreen" component={SettingScreen} />
           <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
         </Drawer.Navigator>
-      {/* </Auth0LoginContainer> */}
     </NavigationContainer>
     </>
   )
