@@ -18,7 +18,7 @@ describe('Cassandra Food Table', () => {
     })
     
     it('Read From Happy Path', async () => {
-        let foodItem = await getFoodFromCassandra('534358')
+        let foodItem = await getFoodFromCassandra('0076150232165')
 
         assert.ok(foodItem, 'The given foodId did not return a result as expected')
     })
