@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from 'jwt-decode';
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, Platform } from 'react-native';
@@ -16,12 +17,6 @@ import SettingScreen from './screens/SettingsScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
 import { proc } from 'react-native-reanimated';
 
-// function toQueryString(params) {
-//   return '?' + Object.entries(params)
-//     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-//     .join('&');
-// }
-
 const App = () => {
   
   const Drawer = createDrawerNavigator();
@@ -29,9 +24,11 @@ const App = () => {
   const authorizationEndpoint = 'https://foodscanningapp.us.auth0.com/authorize'; 
   const auth0ClientId = 'h1tCVe2rPsTtOfnZgVVhp6j8f5ZrIZme'
   
+  WebBrowser.maybeCompleteAuthSession();
   const useProxy = Platform.select({ web: false, default: true });
   const redirectUri = AuthSession.makeRedirectUri({ useProxy });
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
@@ -49,20 +46,6 @@ const App = () => {
     { authorizationEndpoint }
   );
 
-  // const queryParams = toQueryString({
-  //   client_id: auth0ClientId,
-  //   redirect_uri: redirectUrl,
-  //   response_type: 'id_token', // id_token will return a JWT token
-  //   scope: 'openid profile', // retrieve the user's profile
-  //   nonce: 'nonce', // ideally, this will be a random value
-  // });
-  // const authUrl = `${auth0Domain}/authorize` + queryParams;
-
-  // // Perform the authentication
-  // AuthSession.startAsync({ authUrl }).then(response => {
-  //   console.log('response - ',response);
-  // });
-
   console.log(`Redirect URL: ${redirectUri}`);
 
   useEffect(() => {
@@ -79,9 +62,7 @@ const App = () => {
         // Retrieve the JWT token and decode it
         const jwtToken = result.params.id_token;
         const decoded = jwtDecode(jwtToken);
-
-        //const { name } = decoded;
-        //setName(name);
+        setToken(jwtToken)
         setUser(decoded)
       }
     }
