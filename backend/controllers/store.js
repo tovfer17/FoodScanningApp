@@ -1,6 +1,6 @@
 const express = require('express')
 const {getFoodFromCassandra} = require('../relay/food')
-const {listStoresFromGoogle,getStoreFromGoogleById, listStoresFromGoogle2} = require('../relay/store')
+const {getStoreFromGoogleById, listStoresFromGoogle2} = require('../relay/store')
 const store = express()
 module.exports = store;
 
@@ -32,7 +32,7 @@ store.get('/', (req, res) => {
 //     }
 // })
 
-store.get('/items/:foodId/',(req, res) => {
+store.get('/items/:foodId/', async (req, res) => {
     let foodId = req.params.foodId
     let lat = req.query.lat
     let long = req.query.long
@@ -40,7 +40,7 @@ store.get('/items/:foodId/',(req, res) => {
 
     if (foodId && lat && long) {
 
-        let foodResult = getFoodFromCassandra(foodId)
+        let foodResult = await getFoodFromCassandra(foodId)
 
         if (foodResult) {
 
