@@ -15,6 +15,7 @@ import MainTabScreen from './screens/MainTabScreen';
 import SupportScreen from './screens/SupportScreen';
 import SettingScreen from './screens/SettingsScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
+import LoginScreen from "./screens/LoginScreen";
 import { proc } from 'react-native-reanimated';
 
 const App = () => {
@@ -71,12 +72,15 @@ const App = () => {
   return (
     <>
     <NavigationContainer>
+      { !!token ?
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props}/>}>
           <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
           <Drawer.Screen name="SupportScreen" component={SupportScreen} />
           <Drawer.Screen name="SettingsScreen" component={SettingScreen} />
           <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
         </Drawer.Navigator>
+        :null     
+    }
     </NavigationContainer>
     <View>
       {user ? (
