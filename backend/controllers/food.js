@@ -24,42 +24,19 @@ food.get('/:foodId/', async (req, res) => {
 
         console.log(`cache miss on ${foodId}`);
 
-        getFoodFromNutritionix(foodId).then(data => {
+        result = await getFoodFromNutritionix(foodId)
 
-            if (data) {
-                let processed = {
-                    foodId,
-                    name: data.food_name,
-                    ingredients: data.nf_ingredient_statement,
-                    servingSize: data.serving_qty,
-                    servingSizeUnit: data.serving_unit,
-                    labelNutrients: {
-                        calories: data.nf_calories,
-                        fat: data.nf_total_fat,
-                        saturatedFat: data.nf_saturated_fat,
-                        cholesterol: data.nf_cholesterol,
-                        sodium: data.nf_sodium,
-                        carbohydrates: data.nf_total_carbohydrate,
-                        fiber: data.nf_dietary_fiber,
-                        sugars: data.nf_sugars,
-                        protein: data.nf_protein,
-                        potassium: data.nf_potassium,
-                      },
-                    photo: data.photo.thumb
-                }
+        if (result) {
 
-                res.status(200).json(processed)
-                saveFoodToCassandra(processed)
-                
-                return
-
-           }
-            else {
-                res.status(404).json({
-                    ErrorMessage: "Item not found"
-                })
-            }
-        })
+            res.status(200).json(result)
+            saveFoodToCassandra(result)
+            return
+        }
+        else {
+            res.status(404).json({
+                ErrorMessage: "Item not found"
+            })
+        }
     }
     else {
         res.status(400).json({
