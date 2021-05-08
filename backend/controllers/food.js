@@ -1,5 +1,5 @@
 const express = require('express')
-const {getFoodFromUSDA, getFoodFromCassandra, saveFoodToCassandra} = require('../relay/food')
+const {getFoodFromNutritionix, getFoodFromCassandra, saveFoodToCassandra} = require('../relay/food')
 const food = express()
 module.exports = food;
 
@@ -7,14 +7,14 @@ food.get('/', (req, res) => {
     res.send('Hello world from food controller')
 })
 
-// Sample IDs: 534358, 373052
+// Sample IDs: 0076150232165
 
-food.get('/:foodId/',(req, res) => {
+food.get('/:foodId/', async (req, res) => {
     const foodId = req.params.foodId
 
     if (foodId) {
         
-        let result = getFoodFromCassandra(foodId)
+        let result = await getFoodFromCassandra(foodId)
 
         if (result) {
             console.log(`cache hit on ${foodId}`);
@@ -24,31 +24,19 @@ food.get('/:foodId/',(req, res) => {
 
         console.log(`cache miss on ${foodId}`);
 
-        getFoodFromUSDA(foodId).then(data => {
+        result = await getFoodFromNutritionix(foodId)
 
-            if (data) {
+        if (result) {
 
-                let processed = {
-                    foodId: data.fdcId,
-                    name: data.description,
-                    ingredients: data.ingredients,
-                    servingSize: data.servingSize,
-                    servingSizeUnit: data.servingSizeUnit,
-                    labelNutrients: data.labelNutrients
-                }
-
-                res.status(200).json(processed)
-                saveFoodToCassandra(processed)
-                
-                return
-
-            }
-            else {
-                res.status(404).json({
-                    ErrorMessage: "Item not found"
-                })
-            }
-        })
+            res.status(200).json(result)
+            saveFoodToCassandra(result)
+            return
+        }
+        else {
+            res.status(404).json({
+                ErrorMessage: "Item not found"
+            })
+        }
     }
     else {
         res.status(400).json({

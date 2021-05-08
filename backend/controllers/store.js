@@ -1,6 +1,6 @@
 const express = require('express')
-const {getFoodFromCassandra} = require('../relay/food')
-const {listStoresFromGoogle,getStoreFromGoogleById, listStoresFromGoogle2} = require('../relay/store')
+const {getFoodFromCassandra, getFoodFromNutritionix} = require('../relay/food')
+const {getStoreFromGoogleById, listStoresFromGoogle2} = require('../relay/store')
 const store = express()
 module.exports = store;
 
@@ -32,7 +32,7 @@ store.get('/', (req, res) => {
 //     }
 // })
 
-store.get('/items/:foodId/',(req, res) => {
+store.get('/items/:foodId/', async (req, res) => {
     let foodId = req.params.foodId
     let lat = req.query.lat
     let long = req.query.long
@@ -40,13 +40,17 @@ store.get('/items/:foodId/',(req, res) => {
 
     if (foodId && lat && long) {
 
-        let foodResult = getFoodFromCassandra(foodId)
+        let foodResult = await getFoodFromCassandra(foodId)
+
+        if (!foodResult) {
+            foodResult = await getFoodFromNutritionix(foodId)
+        }
 
         if (foodResult) {
 
-            listStoresFromGoogle2(foodResult.name, long, lat, radius).then((storesResult) => {
-                res.status(200).json(storesResult)
-            })
+            let storesResult = await listStoresFromGoogle2(foodResult.name, long, lat, radius)
+            
+            res.status(200).json(storesResult)
         }
         else {
             res.status(404).json({

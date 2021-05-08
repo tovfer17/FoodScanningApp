@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-
-export default function TabOneScreen() {
-  const [hasPermission, setHasPermission] = React.useState<boolean| undefined>(); 
+export default function ScanScreen() {
+  const [hasPermission, setHasPermission] = React.useState(null); 
   const [scanned, setScanned] = useState(false);
-  const axios = require('axios').default;
 
   useEffect(() => {
     (async () => {
@@ -17,21 +15,7 @@ export default function TabOneScreen() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-   /* alert(`Bar code with type ${type} and data ${data} has been scanned!`);*/
-    axios.get('localhost:3000/food', {
-      params: {
-        ID: data
-      }
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-    .then(function () {
-      // always executed
-    });  
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
   if (hasPermission === null) {
@@ -72,11 +56,12 @@ export default function TabOneScreen() {
       )}
     </View>
   );
-}const styles = StyleSheet.create({
+}
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
   },
 });
-
