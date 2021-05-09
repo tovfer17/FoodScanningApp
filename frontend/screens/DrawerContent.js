@@ -1,29 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {View, StyleSheet} from 'react-native';
-import {
-    useTheme,
-    Avatar,
-    Title,
-    Caption,
-    Paragraph,
-    Text,
-    Drawer,
-    TouchableRipple,
-    Switch
-} from 'react-native-paper';
-import {
-    DrawerContentScrollView,
-    DrawerItem
-} from '@react-navigation/drawer';
+import { Avatar, Title, Caption, Paragraph, Drawer } from 'react-native-paper';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AppContext } from '../provider/ContextProvider';
 
 export function DrawerContent(props){
-
-    const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-
-    const toggleTheme = () => {
-        setIsDarkTheme(!isDarkTheme);
-    }
+    const context = useContext(AppContext)
+    const {setToken, user, setUser} = context
 
     return(
         <View style={{flex:1}}>
@@ -33,13 +17,13 @@ export function DrawerContent(props){
                         <View style = {{flexDirection:'row', marginTop: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: 'https://img-17.ccm2.net/D6U8BTHt725j955FrEJc2ELUq9o=/2048x/317e4774e98c48e8a7c26cbcd5651a26/ccm-faq/Incognito_Chrome_0.jpg'
+                                    uri: user.picture
                                 }}
                                 size={50}
                             />
                             <View style = {{marginLeft: 15, flexDirection: 'column'}}>
-                                <Title style = {styles.title}>John Doe</Title>
-                                <Caption style = {styles.caption}>@who-dis</Caption>
+                                <Title style = {styles.title}>{user.name}</Title>
+                                <Caption style = {styles.caption}>{user.nickname}</Caption>
                             </View>
                         </View>
 
@@ -70,15 +54,15 @@ export function DrawerContent(props){
                     <DrawerItem
                         icon = {({color, size}) => (
                             <Icon
-                            name="body-outline"
+                            name="scan-outline"
                             color={color}
                             size={size}
                             />
                         )}
-                        label="Profile"
-                        onPress={() => {props.navigation.navigate('Profile')}}
+                        label="Scan"
+                        onPress={() => {props.navigation.navigate('ScanScreen')}}
                     />
-                    <DrawerItem
+                    {/* <DrawerItem
                         icon = {({color, size}) => (
                             <Icon
                             name="bookmark-outline"
@@ -110,9 +94,9 @@ export function DrawerContent(props){
                         )}
                         label="Support"
                         onPress={() => {props.navigation.navigate('SupportScreen')}}
-                    />
+                    /> */}
                     </Drawer.Section>
-                    <Drawer.Section title="Presferences">
+                    {/* <Drawer.Section title="Preferences">
                         <TouchableRipple onPress = {() => {toggleTheme()}}>
                             <View style={styles.preference}>
                                 <Text>Dark Theme</Text>
@@ -121,7 +105,7 @@ export function DrawerContent(props){
                                 </View>
                             </View>
                         </TouchableRipple>
-                    </Drawer.Section>
+                    </Drawer.Section> */}
                 </View>
             </DrawerContentScrollView>
             <Drawer.Section style = {styles.bottomDrawerSection}>
@@ -134,7 +118,10 @@ export function DrawerContent(props){
                         />
                     )}
                     label="Sign Out"
-                    onPress={() => {}}
+                    onPress={() => {
+                      setUser(null)
+                      setToken(null)
+                    }} 
                 />
             </Drawer.Section>
         </View>

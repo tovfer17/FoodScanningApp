@@ -11,9 +11,7 @@ food.get('/', (req, res) => {
 
 food.get('/:foodId/', async (req, res) => {
     const foodId = req.params.foodId
-
-    if (foodId) {
-        
+    if (true) {
         let result = await getFoodFromCassandra(foodId)
 
         if (result) {
@@ -25,22 +23,25 @@ food.get('/:foodId/', async (req, res) => {
         console.log(`cache miss on ${foodId}`);
 
         result = await getFoodFromNutritionix(foodId)
-
+        
         if (result) {
 
-            res.status(200).json(result)
+            // res.status(200).json(result)
             saveFoodToCassandra(result)
+            res.status(200).json(result)
             return
         }
         else {
             res.status(404).json({
                 ErrorMessage: "Item not found"
             })
+            return
         }
     }
     else {
         res.status(400).json({
             ErrorMessage: "foodId is required"
         })
+        return
     }
 })
