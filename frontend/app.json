@@ -1,7 +1,9 @@
 {
+  "name": "FoodScanningApp Frontend",
+  "displayName": "FoodScanningApp Frontend",
   "expo": {
     "name": "FoodScanningApp Frontend",
-    "slug": "testRun2",
+    "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,9 +11,6 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
@@ -27,6 +26,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "https"
   }
 }
