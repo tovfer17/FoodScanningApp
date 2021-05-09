@@ -55,7 +55,30 @@ const getFoodFromNutritionix = async (foodId) => {
     //console.log('RELAY - ',res,data);
 
     if (data && res.status === 200){
-      return data.foods[0] //data
+      let result = data.foods[0] //data
+
+      let processed = {
+        foodId,
+        name: result.food_name,
+        ingredients: result.nf_ingredient_statement,
+        servingSize: result.serving_qty,
+        servingSizeUnit: result.serving_unit,
+        labelNutrients: {
+            calories: result.nf_calories,
+            fat: result.nf_total_fat,
+            saturatedFat: result.nf_saturated_fat,
+            cholesterol: result.nf_cholesterol,
+            sodium: result.nf_sodium,
+            carbohydrates: result.nf_total_carbohydrate,
+            fiber: result.nf_dietary_fiber,
+            sugars: result.nf_sugars,
+            protein: result.nf_protein,
+            potassium: result.nf_potassium,
+          },
+        photo: result.photo.thumb
+      }
+
+      return processed
     }
     else {
       return null

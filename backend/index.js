@@ -37,9 +37,22 @@ app.get('/', (req, res) => {
 //app.use(checkJwt);
 
 app.use(express.json())
-app.use('/user', user)
-app.use('/food', food)
-app.use('/store',store)
+
+try {
+  app.use('/user', user)
+  app.use('/food', food)
+  app.use('/store',store)
+}
+catch (e) {
+  console.error('Server Error - ',e);
+  app.get('*',(req, res) => {
+    res.status(500).json({
+      ErrorMessage: 'Something went wrong'
+    })
+  })
+}
+
+
 
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`)
