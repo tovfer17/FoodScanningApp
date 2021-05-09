@@ -16,6 +16,7 @@ import {
     DrawerItem
 } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Ionicons'
+import ScanScreen from './ScanScreen';
 
 export function DrawerContent(props){
 
@@ -70,15 +71,15 @@ export function DrawerContent(props){
                     <DrawerItem
                         icon = {({color, size}) => (
                             <Icon
-                            name="body-outline"
+                            name="scan-outline"
                             color={color}
                             size={size}
                             />
                         )}
-                        label="Profile"
-                        onPress={() => {props.navigation.navigate('Profile')}}
+                        label="Scan"
+                        onPress={() => {props.navigation.navigate('ScanScreen')}}
                     />
-                    <DrawerItem
+                    {/* <DrawerItem
                         icon = {({color, size}) => (
                             <Icon
                             name="bookmark-outline"
@@ -110,9 +111,9 @@ export function DrawerContent(props){
                         )}
                         label="Support"
                         onPress={() => {props.navigation.navigate('SupportScreen')}}
-                    />
+                    /> */}
                     </Drawer.Section>
-                    <Drawer.Section title="Presferences">
+                    <Drawer.Section title="Preferences">
                         <TouchableRipple onPress = {() => {toggleTheme()}}>
                             <View style={styles.preference}>
                                 <Text>Dark Theme</Text>
