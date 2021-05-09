@@ -84,7 +84,7 @@ export default function AppContainer() {
           :null     
       }
       </NavigationContainer>
-      <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: 36}}>
+      <View style={!token ? {flex: 1, justifyContent: 'flex-end', marginBottom: 36} : null}>
         {user ? (
           <>
             <Text>You are logged in, {user.name}!</Text>
