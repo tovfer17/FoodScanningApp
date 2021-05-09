@@ -24,7 +24,7 @@ export default function AppContainer() {
   const context = useContext(TokenContext)
   console.log(context)
   const Drawer = createDrawerNavigator();
-  
+
   const authorizationEndpoint = 'https://foodscanningapp.us.auth0.com/authorize'; 
   const auth0ClientId = 'h1tCVe2rPsTtOfnZgVVhp6j8f5ZrIZme'
   
@@ -84,11 +84,14 @@ export default function AppContainer() {
           :null     
       }
       </NavigationContainer>
-      <View style={!token ? {flex: 1, justifyContent: 'flex-end', marginBottom: 36} : null}>
+      <View style={!token ? {flex: 1, justifyContent: 'center'} : null}>
         {user ? (
           <>
             <Text>You are logged in, {user.name}!</Text>
-            <Button title="Log out" onPress={() => setUser(null)} />
+            <Button title="Log out" onPress={() => {
+              setUser(null)
+              setToken(null)
+            }} />
           </>
         ) : (
           <Button
