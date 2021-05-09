@@ -1,33 +1,13 @@
 import React, { useContext } from 'react';
 import {View, StyleSheet} from 'react-native';
-import {
-    useTheme,
-    Avatar,
-    Title,
-    Caption,
-    Paragraph,
-    Text,
-    Drawer,
-    TouchableRipple,
-    Switch
-} from 'react-native-paper';
-import {
-    DrawerContentScrollView,
-    DrawerItem
-} from '@react-navigation/drawer';
+import { Avatar, Title, Caption, Paragraph, Drawer } from 'react-native-paper';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Ionicons'
-import ScanScreen from './ScanScreen';
 import { AppContext } from '../provider/ContextProvider';
 
 export function DrawerContent(props){
-    const [isDarkTheme, setIsDarkTheme] = React.useState(false);
     const context = useContext(AppContext)
-
     const {setToken, user, setUser} = context
-
-    const toggleTheme = () => {
-        setIsDarkTheme(!isDarkTheme);
-    }
 
     return(
         <View style={{flex:1}}>
