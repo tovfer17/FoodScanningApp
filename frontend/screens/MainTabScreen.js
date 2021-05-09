@@ -20,7 +20,7 @@ const MainTabScreen = () => (
     <Tab.Navigator
       initialRouteName="Home"
       activeColor="#fff"
-      barStyle={{ backgroundColor: 'tomato' }}
+      barStyle={{ backgroundColor: '#000000' }}
     >
       <Tab.Screen
         name="Home"
@@ -44,7 +44,7 @@ const MainTabScreen = () => (
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Profile"
         component={ProfileStackScreen}
         options={{
@@ -65,7 +65,7 @@ const MainTabScreen = () => (
             <Icon name="settings-outline" color={color} size={26} />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
 );
 
@@ -74,7 +74,7 @@ export default MainTabScreen;
 const HomeStackScreen = ({navigation}) => (
     <HomeStack.Navigator screenOptions = {{
       headerStyle: {
-        backgroundColor: '#009387'
+        backgroundColor: '#000000'
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
@@ -85,7 +85,7 @@ const HomeStackScreen = ({navigation}) => (
         title: 'Home', 
         headerLeft: () => (
           <Icon.Button name= "ios-menu" size={25}
-          backgroundColor= '#009387' onPress={() => navigation.openDrawer()}></Icon.Button>
+          backgroundColor= '#000000' onPress={() => navigation.openDrawer()}></Icon.Button>
         )
       }} />
     </HomeStack.Navigator>
@@ -104,7 +104,7 @@ const HomeStackScreen = ({navigation}) => (
       <DetailsStack.Screen name="Scan" component={ScanScreen} options = {{
          headerLeft: () => (
           <Icon.Button name= "ios-menu" size={25}
-          backgroundColor= '#1f65ff' onPress={() => navigation.openDrawer()}></Icon.Button>
+          backgroundColor= '#000000' onPress={() => navigation.openDrawer()}></Icon.Button>
         )
       }} />
     </DetailsStack.Navigator>
@@ -113,7 +113,7 @@ const HomeStackScreen = ({navigation}) => (
   const ProfileStackScreen = ({navigation}) => (
     <ProfileStack.Navigator screenOptions = {{
       headerStyle: {
-        backgroundColor: '#694fad'
+        backgroundColor: '#000000'
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
