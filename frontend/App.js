@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { TokenProvider } from './provider/TokenProvider.js'
+import { ContextProvider } from './provider/ContextProvider.js'
 import AppContainer from './screens/AppContainer';
 
 const App = () => {
 
   return (
-    <TokenProvider>
+    <ContextProvider>
       <AppContainer />
-    </TokenProvider>
+    </ContextProvider>
   )
 }
 

@@ -18,11 +18,11 @@ import SettingScreen from './SettingsScreen';
 import BookmarkScreen from './BookmarkScreen';
 import LoginScreen from "./LoginScreen";
 import { proc } from 'react-native-reanimated';
-import { TokenContext } from '../provider/TokenProvider';
+import { AppContext } from '../provider/ContextProvider';
 
 export default function AppContainer() {
-  const context = useContext(TokenContext)
-  console.log(context)
+  const context = useContext(AppContext)
+
   const Drawer = createDrawerNavigator();
 
   const authorizationEndpoint = 'https://foodscanningapp.us.auth0.com/authorize'; 
@@ -31,8 +31,8 @@ export default function AppContainer() {
   WebBrowser.maybeCompleteAuthSession();
   const useProxy = Platform.select({ web: false, default: true });
   const redirectUri = AuthSession.makeRedirectUri({ useProxy });
-  const [user, setUser] = useState(null);
-  const {token, setToken} = context
+
+  const {token, setToken, user, setUser} = context
 
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
@@ -85,21 +85,13 @@ export default function AppContainer() {
       }
       </NavigationContainer>
       <View style={!token ? {flex: 1, justifyContent: 'center'} : null}>
-        {user ? (
-          <>
-            <Text>You are logged in, {user.name}!</Text>
-            <Button title="Log out" onPress={() => {
-              setUser(null)
-              setToken(null)
-            }} />
-          </>
-        ) : (
+        {!user && 
           <Button
             disabled={!request}
             title="Log in with Auth0"
             onPress={() => promptAsync({ useProxy })}
           />
-        )}
+        }
       </View>
     </>
   )
