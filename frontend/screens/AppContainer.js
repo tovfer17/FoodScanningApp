@@ -81,10 +81,10 @@ export default function AppContainer() {
             <Drawer.Screen name="SettingsScreen" component={SettingScreen} />
             <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
           </Drawer.Navigator>
-          :null     
+          :<LoginScreen/>    
       }
       </NavigationContainer>
-      <View style={!token ? {flex: 1, justifyContent: 'center'} : null}>
+      {/* <View style={!token ? {flex: 1, justifyContent: 'center'} : null}>
         {!user && 
           <Button
             disabled={!request}
@@ -92,7 +92,7 @@ export default function AppContainer() {
             onPress={() => promptAsync({ useProxy })}
           />
         }
-      </View>
+      </View> */}
     </>
   )
 }
