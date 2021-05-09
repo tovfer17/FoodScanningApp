@@ -3,17 +3,21 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 import DetailsScreen from './DetailsScreen'
+import Constants from 'expo-constants'
+const { manifest } = Constants;
 
 export default function ScanScreen() {
   const [hasPermission, setHasPermission] = React.useState(null); 
   const [scanned, setScanned] = useState(false);
 
-   const[foods,getFoods]=  useState(null);
+  const[foods,setFoods]=  useState(null);
 
-
+   const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
+   ? manifest.debuggerHost.split(`:`).shift().concat(`:3000`)
+   : `api.example.com`;
 
   useEffect(() => {
-    handleBarCodeScanned();
+    // handleBarCodeScanned();
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === 'granted');
@@ -23,22 +27,19 @@ export default function ScanScreen() {
   }, []);
 
 
-  const handleBarCodeScanned = (dataa) => {
+  const handleBarCodeScanned = (barcode) => {
     setScanned(true);
-      axios
-        .get('https://localhost:3000/food/',{
-          params: {
-            ID: dataa
-          }
-        })
-        .then(response =>{
-          const allFoods= setResponseData(response.data);
-          getFoods(allFoods);
-        })
-        .catch((error) => {
-          console.log(error)
+    console.log(barcode.data)
+    axios.get(`http://${api}/food/${barcode.data}`)
+      .then(response =>{
+        const allFoods= response.data;
+        console.log(allFoods)
+        setFoods(allFoods);
       })
-      }
+      .catch((error) => {
+        console.log(error)
+    })
+  }
 
 
   if (hasPermission === null) {

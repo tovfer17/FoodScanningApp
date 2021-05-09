@@ -1,1 +1,1 @@
-./entrypoint-wrap.sh eol=lf
+entrypoint-wrap.sh eol=lf
