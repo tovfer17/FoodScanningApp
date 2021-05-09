@@ -10,6 +10,7 @@
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/material-bottom-tabs": "^5.3.15",
     "@react-navigation/stack": "^5.14.5",
+    "axios": "^0.21.1",
     "expo": "~41.0.1",
     "expo-auth-session": "^3.2.3",
     "expo-barcode-scanner": "^10.1.2",
