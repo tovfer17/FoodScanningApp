@@ -40,13 +40,16 @@ const createUserProfile = async (user) => {
 
 const getUserHistory = async (username) => {
   if (!!username) {
-    const query = `SELECT history FROM users WHERE username = ?`
+    const query = `SELECT  history FROM users WHERE username = ?`
 
     try {
       const results = await db.execute(query, [ username ], {prepare: true})
-      let history = results.first().history
+      let history = results.first()
+
+      history = !!history ? history.history : history
 
       if (!!history) {
+        history = history.reverse();
         for (let [index, foodId] of history.entries()) {
           foodId = foodId.toString()
           let food = await getFoodFromCassandra(foodId)
