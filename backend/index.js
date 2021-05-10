@@ -4,8 +4,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express')
+const cors = require('cors')
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+const bodyParser = require('body-parser')
+
 const app = express()
 const port = process.env.PORT || 3000
 const user = require('./controllers/user')
@@ -14,6 +17,12 @@ const store = require('./controllers/store')
 const initCassandra = require('./cassandra/init.js')
 
 initCassandra(15)
+
+app.use(cors())
+app.use( bodyParser.json() ); 
+app.use(express.urlencoded({
+  extended: true
+}));
 
 const checkJwt = jwt({
     secret: jwksRsa.expressJwtSecret({
@@ -24,7 +33,7 @@ const checkJwt = jwt({
     }),
   
     // Validate the audience and the issuer.
-    audience: process.env.AUTH0_API_IDENTIFIER,
+    // audience: process.env.AUTH0_API_IDENTIFIER,
     issuer: `https://${process.env.AUTH0_DOMAIN}/`,
     algorithms: ['RS256']
   });
@@ -34,7 +43,7 @@ app.get('/', (req, res) => {
 })
 
 // comment out for now
-//app.use(checkJwt);
+app.use(checkJwt);
 
 app.use(express.json())
 

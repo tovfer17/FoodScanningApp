@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react'
-import { View, Text, Button, StyleSheet, Image, Platform} from 'react-native';
+import React, {useEffect, useContext} from 'react'
+import { View,  Button, StyleSheet, Image, Platform} from 'react-native';
 import { AppContext } from '../provider/ContextProvider';
 
 import * as AuthSession from 'expo-auth-session';
@@ -9,7 +9,6 @@ import jwtDecode from 'jwt-decode';
 
 const LoginScreen = ({navigation}) => {
   const context = useContext(AppContext)
-  console.log(context)
 
   const authorizationEndpoint = 'https://foodscanningapp.us.auth0.com/authorize'; 
   const auth0ClientId = 'h1tCVe2rPsTtOfnZgVVhp6j8f5ZrIZme'
@@ -35,13 +34,13 @@ const LoginScreen = ({navigation}) => {
     { authorizationEndpoint }
   );
 
-  console.log(`Redirect URL: ${redirectUri}`);
+  // console.log(`Redirect URL: ${redirectUri}`);
 
   useEffect(() => {
-    console.log('sign in info - ', result);
+    // console.log('sign in info - ', result);
     if (result) {
       if (result.error) {
-        Alert.alert(
+        alert(
           'Authentication error',
           result.params.error_description || 'something went wrong'
         );
@@ -64,8 +63,9 @@ const LoginScreen = ({navigation}) => {
         />
         <Button
             disabled={!request}
-            title="Log in with Auth0"
+            title="Click here to sign in"
             onPress={() => promptAsync({ useProxy })}
+            color="#007eff"
           />
       </View>
     );
@@ -78,7 +78,9 @@ const styles = StyleSheet.create({
       flex: 1, 
       alignItems: 'center', 
       justifyContent: 'center',
-      backgroundColor: 'black'
+      backgroundColor: 'black',
+      padding: 15,
+      paddingBottom: 100
     },
     titleText: {
         fontSize: 30,

@@ -1,4 +1,5 @@
 const express = require('express')
+const { getUserProfile, createUserProfile, getUserHistory, addToUserHistory } = require('../relay/user')
 const user = express()
 module.exports = user;
 
@@ -10,7 +11,31 @@ user.get('/', (req, res) => {
 
 /* User */
 
-user.get('/:userId/profile/', (req, res) => {})
+user.get('/:userId/profile/', async (req, res) => {
+  let user = await getUserProfile(req.user.nickname)
+
+  if (!!user) {
+    return res.status(200).send(user)
+  }
+
+  let userData = {
+    username: req.user.nickname,
+    name: req.user.name,
+    picture: req.user.picture,
+    state: 'active',
+    timestamp: Date.now()
+  }
+
+  const isUserCreated = await createUserProfile(userData)
+
+  if (isUserCreated) {
+    user = await getUserProfile(userData.username)
+    return res.status(200).send(user)
+  }
+
+  return res.status(422).send({error: 'User was not found and could not be created, please contact the FoodScanningApp support team.'})
+
+})
 
 user.post('/profile/', (req, res) => {})
 
@@ -39,6 +64,24 @@ user.get('/:userId/favorites/:favoriteFolderNumber/', (req, res) => {})
 user.post('/:userId/favorites/', (req, res) => {})
 
 user.delete('/:userId/favorites/:favoriteFolderNumber/item/:foodId/', (req,res) => {})
+
+/* History */
+
+user.get('/:userId/history/', async (req, res) => {
+  const username = req.user.nickname
+  const history = await getUserHistory(username)
+
+  return res.status(200).json(history)
+})
+
+user.post(`/:userId/history/add`, async (req, res) => {
+  const username = req.user.nickname
+  const foodId = req.body.foodId
+
+  const history = await addToUserHistory(username, foodId)
+
+  return res.status(200).json(history)
+})
 
 /* Calories */
 

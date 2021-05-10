@@ -95,9 +95,9 @@ const saveFoodToCassandra = async (food) => {
         /*Write to table*/
 
         const query = `INSERT INTO foods \
-                      ("foodId", name, ingredients, serving_size, serving_size_unit, label_nutrients, photo) VALUES \
+                      ("foodId", name, ingredients, serving_size, serving_size_unit, "labelNutrients", photo) VALUES \
                       (:foodId, :name, :ingredients, :servingSize, :servingSizeUnit, :labelNutrients, :photo) \
-                      USING TTL ${60 * 1}`
+                      USING TTL ${60 * 60 * 24}`
         try {
           await db.execute(query, {...food}, {prepare: true})
 
