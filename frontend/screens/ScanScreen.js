@@ -2,7 +2,7 @@ import React, {  useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
-import DetailsScreen from './DetailsScreen'
+import HomeScreen from './HomeScreen'
 import Constants from 'expo-constants'
 const { manifest } = Constants;
 
@@ -50,7 +50,7 @@ export default function ScanScreen() {
   }
 
   return (
-    
+  
     <View
       style={{
         flex: 1,
@@ -58,7 +58,7 @@ export default function ScanScreen() {
         justifyContent: "flex-end"
       }}
     >
-       <DetailsScreen foods={foods}/>
+      
       {scanned ? (
    
         <View
