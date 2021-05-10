@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import axios from 'axios'
 
 import {DrawerContent} from './DrawerContent'
-
 import MainTabScreen from './MainTabScreen';
 import SupportScreen from './SupportScreen';
 import SettingScreen from './SettingsScreen';
@@ -16,7 +16,23 @@ export default function AppContainer() {
   const Drawer = createDrawerNavigator();
 
   const context = useContext(AppContext)
-  const { token } = context
+  const { token, user, setUser, api } = context
+
+  useEffect(() => {
+    if (!!user && user.state !== 'active') {
+      axios.get(`http://${api}/user/${user.nickname}/profile`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => {
+          setUser(res.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }, [user])
 
   return (
     <>

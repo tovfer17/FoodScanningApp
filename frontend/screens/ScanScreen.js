@@ -3,40 +3,60 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 import DetailsScreen from './DetailsScreen'
-import Constants from 'expo-constants'
 import { AppContext } from '../provider/ContextProvider';
-const { manifest } = Constants;
 
 export default function ScanScreen() {
   const context = useContext(AppContext)
-  console.log(context)
   const [hasPermission, setHasPermission] = React.useState(null); 
   const [scanned, setScanned] = useState(false);
 
-  const[foods,setFoods]=  useState(null);
+  const[foods, setFoods] = useState(null);
 
-   const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
-   ? manifest.debuggerHost.split(`:`).shift().concat(`:3000`)
-   : `api.example.com`;
+  const { token, api, user } = context
 
   useEffect(() => {
     // handleBarCodeScanned();
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      try {
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setHasPermission(status === 'granted');
+      } catch (error) {
+        alert('Cannot access camera.')
+        setHasPermission(false)
+      }
       
     })();
     
   }, []);
 
+  useEffect(() => {
+    if (!!foods) {
+      axios.post(`http://${api}/user/${user.username}/history/add`, { foodId: foods.foodId }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => {
+          console.log(res.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }, [foods])
+
 
   const handleBarCodeScanned = (barcode) => {
     setScanned(true);
-    console.log(barcode.data)
-    axios.get(`http://${api}/food/${barcode.data}`)
+    // console.log(barcode.data)
+    axios.get(`http://${api}/food/${barcode.data}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response =>{
         const allFoods= response.data;
-        console.log(allFoods)
+        // console.log(allFoods)
         setFoods(allFoods);
       })
       .catch((error) => {
@@ -53,7 +73,6 @@ export default function ScanScreen() {
   }
 
   return (
-    
     <View
       style={{
         flex: 1,
@@ -61,23 +80,15 @@ export default function ScanScreen() {
         justifyContent: "flex-end"
       }}
     >
-       <DetailsScreen foods={foods}/>
       {scanned ? (
-   
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "gray"
+            marginTop: 15
           }}
-        >
-          
-          <Button
-            title={"Tap to Scan Again"}
-            onPress={() => setScanned(false)}
-          />
-         
+        > 
+          <DetailsScreen foods={foods}/>
+          <Button title="Tap to Scan Again" onPress={() => setScanned(false)}/>
         </View>
       ) : (
         <BarCodeScanner

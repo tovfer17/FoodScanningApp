@@ -17,23 +17,23 @@ export function DrawerContent(props){
                         <View style = {{flexDirection:'row', marginTop: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: user.picture
+                                    uri: !!user ? user.picture : ''
                                 }}
                                 size={50}
                             />
                             <View style = {{marginLeft: 15, flexDirection: 'column'}}>
-                                <Title style = {styles.title}>{user.name}</Title>
-                                <Caption style = {styles.caption}>{user.nickname}</Caption>
+                                <Title style = {styles.title}>{!!user ? user.name : 'Jane Doe'}</Title>
+                                <Caption style = {styles.caption}>{!!user ? user.nickname : 'jane.doe'}</Caption>
                             </View>
                         </View>
 
                         <View style = {styles.row}>
                             <View style = {styles.section}>
-                                <Paragraph style = {styles.paragraph, styles.caption}>80</Paragraph>
+                                <Paragraph style = {styles.paragraph, styles.caption}>{!!user && !!user.following ? user.following.length : 0}</Paragraph>
                                 <Caption style = {styles.caption}>Following</Caption>
                             </View>
                             <View style = {styles.section}>
-                                <Paragraph style = {styles.paragraph, styles.caption}>120</Paragraph>
+                                <Paragraph style = {styles.paragraph, styles.caption}>{!!user && !!user.followers ? user.followers.length : 0}</Paragraph>
                                 <Caption style = {styles.caption}>Followers</Caption>
                             </View>
                         </View>
@@ -60,7 +60,7 @@ export function DrawerContent(props){
                             />
                         )}
                         label="Scan"
-                        onPress={() => {props.navigation.navigate('ScanScreen')}}
+                        onPress={() => {props.navigation.navigate('Scan')}}
                     />
                     {/* <DrawerItem
                         icon = {({color, size}) => (
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     caption: {
       fontSize: 14,
       lineHeight: 14,
+      marginLeft: 3
     },
     row: {
       marginTop: 20,

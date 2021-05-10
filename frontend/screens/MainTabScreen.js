@@ -94,7 +94,7 @@ const HomeStackScreen = ({navigation}) => (
   const DetailsStackScreen = ({navigation}) => (
     <DetailsStack.Navigator screenOptions = {{
       headerStyle: {
-        backgroundColor: '#1f65ff'
+        backgroundColor: '#000000'
       },
       headerTintColor: '#fff',
       headerTitleStyle: {

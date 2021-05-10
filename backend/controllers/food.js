@@ -12,7 +12,6 @@ food.get('/', (req, res) => {
 food.get('/:foodId/', async (req, res) => {
     const foodId = req.params.foodId
 
-    console.log(req.user)
     if (foodId) {
         let result = await getFoodFromCassandra(foodId)
 
@@ -25,7 +24,7 @@ food.get('/:foodId/', async (req, res) => {
         console.log(`cache miss on ${foodId}`);
 
         result = await getFoodFromNutritionix(foodId)
-        
+
         if (result) {
 
             // res.status(200).json(result)
