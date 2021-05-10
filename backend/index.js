@@ -24,7 +24,7 @@ const checkJwt = jwt({
     }),
   
     // Validate the audience and the issuer.
-    audience: process.env.AUTH0_API_IDENTIFIER,
+    // audience: process.env.AUTH0_API_IDENTIFIER,
     issuer: `https://${process.env.AUTH0_DOMAIN}/`,
     algorithms: ['RS256']
   });
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 })
 
 // comment out for now
-//app.use(checkJwt);
+app.use(checkJwt);
 
 app.use(express.json())
 

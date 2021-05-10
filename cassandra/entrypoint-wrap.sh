@@ -7,17 +7,16 @@ CQL+="CREATE TYPE IF NOT EXISTS $CASSANDRA_KEYSPACE.social_info(user_id int, sta
 CQL+="CREATE TYPE IF NOT EXISTS $CASSANDRA_KEYSPACE.calorie_tracker(tracker_id int, food_id int, serving_size decimal, consumption_timestamp timestamp);"
 CQL+="CREATE TABLE IF NOT EXISTS $CASSANDRA_KEYSPACE.users
     (
-      id int,
+      username text,
       first_name text,
       last_name text,
-      email text,
       favorites frozen<folder>,
       followers list<frozen<social_info>>,
       following list<frozen<social_info>>,
       calorie_tracker list<frozen<calorie_tracker>>,
       state text,
       timestamp timestamp,
-      PRIMARY KEY (id, timestamp)
+      PRIMARY KEY (username, timestamp)
     ) WITH CLUSTERING ORDER BY (timestamp DESC);"
 CQL+="CREATE TYPE IF NOT EXISTS $CASSANDRA_KEYSPACE.nutrients
       (

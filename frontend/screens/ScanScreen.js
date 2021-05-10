@@ -1,12 +1,15 @@
-import React, {  useState, useEffect } from 'react';
+import React, {  useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 import DetailsScreen from './DetailsScreen'
 import Constants from 'expo-constants'
+import { AppContext } from '../provider/ContextProvider';
 const { manifest } = Constants;
 
 export default function ScanScreen() {
+  const context = useContext(AppContext)
+  console.log(context)
   const [hasPermission, setHasPermission] = React.useState(null); 
   const [scanned, setScanned] = useState(false);
 

@@ -11,7 +11,9 @@ food.get('/', (req, res) => {
 
 food.get('/:foodId/', async (req, res) => {
     const foodId = req.params.foodId
-    if (true) {
+
+    console.log(req.user)
+    if (foodId) {
         let result = await getFoodFromCassandra(foodId)
 
         if (result) {

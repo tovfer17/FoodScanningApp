@@ -41,7 +41,7 @@ const LoginScreen = ({navigation}) => {
     console.log('sign in info - ', result);
     if (result) {
       if (result.error) {
-        Alert.alert(
+        alert(
           'Authentication error',
           result.params.error_description || 'something went wrong'
         );
